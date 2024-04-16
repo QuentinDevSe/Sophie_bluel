@@ -1,12 +1,14 @@
+import { login } from './login.js';
+login();
 let works = [];
-// Récupération des pièces depuis l'API
+// Récupération des travaux depuis l'API
 async function fetchWorks() {
     const reponse = await fetch('http://localhost:5678/api/works');
     works = await reponse.json();
     genererWorks(works);
 }
 
-fetchWorks(); 
+fetchWorks();
 
 function genererWorks(works) {
     for (let i = 0; i < works.length; i++) {
@@ -32,7 +34,7 @@ function genererWorks(works) {
 
 const boutonFiltrerObjets = document.querySelector(".btn-filters-objects");
 boutonFiltrerObjets.addEventListener("click", function () {
-    worksFiltresObjects = works.filter(function (work) {
+    const worksFiltresObjects = works.filter(function (work) {
         return work.category.id === 1;
     });
     document.querySelector(".gallery").innerHTML = "";
@@ -41,7 +43,7 @@ boutonFiltrerObjets.addEventListener("click", function () {
 
 const boutonFiltrerAppartements = document.querySelector(".btn-filters-appartements");
 boutonFiltrerAppartements.addEventListener("click", function () {
-    worksFiltresAppartements = works.filter(function (work) {
+    const worksFiltresAppartements = works.filter(function (work) {
         return work.category.id === 2;
     });
     document.querySelector(".gallery").innerHTML = "";
@@ -50,7 +52,7 @@ boutonFiltrerAppartements.addEventListener("click", function () {
 
 const boutonFiltrerHotelRestaurant = document.querySelector(".btn-filters-hotelrestaurant");
 boutonFiltrerHotelRestaurant.addEventListener("click", function () {
-    worksFiltresHotelRestaurant = works.filter(function (work) {
+    const worksFiltresHotelRestaurant = works.filter(function (work) {
         return work.category.id === 3;
     });
     document.querySelector(".gallery").innerHTML = "";
