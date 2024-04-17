@@ -1,5 +1,5 @@
-import { login } from './login.js';
-login();
+//import { login } from './login.js';
+//login();
 let works = [];
 // Récupération des travaux depuis l'API
 async function fetchWorks() {

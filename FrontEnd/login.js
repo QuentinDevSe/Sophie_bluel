@@ -1,4 +1,4 @@
-export async function login() {
+async function login() {
     const form = document.querySelector('form');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
@@ -6,10 +6,10 @@ export async function login() {
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        // Création de l’objet du nouvel avis.
+        // Création de l’objet de l'utilisateur
         const  formData = {
-        email: event.target.querySelector("[email=email").value,
-        password: event.target.querySelector("[password=password]").value,
+        email: emailInput.value,
+        password: passwordInput.value.toString()
         };
         // Création de la charge utile au format JSON
         const chargeUtile = JSON.stringify(formData);
@@ -24,6 +24,7 @@ export async function login() {
             if (response.ok) {
                 // Authentification réussie, rediriger l'utilisateur vers la page d'accueil
                 window.location.href = 'index.html';
+                console.log("Connection ok");
             } else {
                 // Afficher un message d'erreur à l'utilisateur
                 alert('Erreur dans l’identifiant ou le mot de passe');
