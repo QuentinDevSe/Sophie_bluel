@@ -45,14 +45,12 @@ async function login() {
                 console.error('Erreur lors de la connexion :', error);
                 alert('Une erreur s\'est produite lors de la connexion');
             }
-        }   
-        const form = document.querySelector('form');
-        form.addEventListener('submit', FormSubmit);
-};
-
+        }
+        
     // Ajout du gestionnaire d'événements à la soumission du formulaire
-    
-
+    const form = document.querySelector('form');
+    form.addEventListener('submit', FormSubmit);
+};
 
 // Appel de la fonction login lors du chargement du document
 document.addEventListener('DOMContentLoaded', () => {
