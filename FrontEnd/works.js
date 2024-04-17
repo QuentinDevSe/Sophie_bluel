@@ -1,9 +1,3 @@
-import { login } from './login.js';
-
-// Appel de la fonction login lors du chargement du document
-document.addEventListener('DOMContentLoaded', () => {
-    login();
-});
 
 let works = [];
 // Récupération des travaux depuis l'API
