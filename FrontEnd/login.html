@@ -26,11 +26,11 @@
 <main>
 	<section id="login">
 		<h2>Log In</h2>
-		<form action="#" method="post">
+		<form action="http://localhost:5678/api/users/login" method="post">
 			<label for="email">Email</label>
 			<input type="email" name="email" id="email">
 			<label for="password">Mot de passe :</label>
-            <input type="password" id="password" name="password">
+            <input type="password" id="password" name="password" autocomplete="current-password">
 			<input type="submit" value="Se Connecter">
 		</form>
         <div class="forget">
