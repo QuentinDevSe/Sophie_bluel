@@ -2,6 +2,7 @@
    v2.0 | 20110126
    License: none (public domain)
 */
+* { box-sizing: border-box;}
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -57,6 +58,7 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
+
 header {
 	display: flex;
 	justify-content: space-between;
@@ -138,6 +140,29 @@ a:hover {
 
 #introduction p {
 	margin-bottom: 0.5em;
+}
+
+.modal {
+	position:fixed;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.7);
+
+}
+
+.modal-wrapper {
+	overflow: auto;
+	width: 800px;
+	max-width: calc(100vw - 30px);
+	height: 900px;
+	padding: 20px;
+	border-radius: 10px;
+	background-color: #FFFEF8;
 }
 
 .filtres {
