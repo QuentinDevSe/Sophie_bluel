@@ -142,6 +142,22 @@ a:hover {
 	margin-bottom: 0.5em;
 }
 
+.portfolio-title {
+    display: flex;
+	justify-content: center;
+    align-items: center;
+	text-align: center;
+}
+
+.portfolio-title h2 {
+    margin-right: 10px; 
+}
+
+.portfolio-title a {
+    text-decoration: none; 
+    color: #1D6154; 
+}
+
 .modal {
     position: fixed;
     top: 0;
@@ -163,6 +179,37 @@ a:hover {
     border-radius: 10px;
     background-color: #FFFEF8;
 }
+
+.js-modal-close-button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.js-modal-close {
+    background-color: transparent;
+    border: none;
+    font-size: 26px;
+    color: black; 
+    cursor: pointer;
+}
+
+.js-modal-close:hover {
+    color: darkgray; 
+}
+
+/* Style pour les miniatures d'images */
+.min-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Utilisez auto-fill pour remplir la ligne */
+    grid-gap: 15px;
+}
+
+.min {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+}
+
 
 .filtres {
 	display: flex;
