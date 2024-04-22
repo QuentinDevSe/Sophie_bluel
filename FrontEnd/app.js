@@ -1,8 +1,7 @@
+
 let modal = null;
 const focusableSelector = "button, a, input, textarea";
 let focusables = [];
-
-
 
 const openModal = function (event) {
     event.preventDefault();
@@ -67,12 +66,13 @@ const updateModalContent = function () {
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-button');
         deleteButton.textContent = 'Supprimer';
-        deleteButton.addEventListener('click', function () {
-            // Supprimer l'image de la galerie principale
-            image.parentElement.remove();
-            // Supprimer l'image de la modale
-            modalImageContainer.remove();
-        });
+         // Ajoutez l'ID du travail comme un attribut data-id
+         deleteButton.dataset.id = image.parentElement.dataset.id;
+        
+         deleteButton.addEventListener('click', async function () {
+             const workId = deleteButton.dataset.id; // Récupérez l'ID du travail depuis l'attribut data-id
+             await deleteWorkAndUpdateDOM(workId, modalImageContainer);
+         });
 
         modalImageContainer.appendChild(deleteButton);
         modalImageContainer.appendChild(modalImage);
@@ -90,9 +90,32 @@ const updateModalContent = function () {
     });
 
     modalContent.appendChild(addWorkButton);
-}; 
+};
 
-constdisplayAddWorkForm = function () {
+// Fonction pour supprimer un travail de l'API
+const deleteWork = async function(workId) {
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) {
+            throw new Error('Erreur lors de la suppression du travail');
+        }
+        return response; // Retournez la réponse pour vérification dans la fonction appelante
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const deleteWorkAndUpdateDOM = async function(workId, imageContainer) {
+    await deleteWork(workId); // Supprimez le travail de l'API
+    // Supprimez l'image de la galerie principale
+    imageContainer.parentElement.remove();
+    // Supprimez l'image de la modale
+    imageContainer.remove();
+};
+
+const displayAddWorkForm = function () {
     const modalContent = modal.querySelector('.modal-wrapper');
     modalContent.innerHTML = ''; 
 

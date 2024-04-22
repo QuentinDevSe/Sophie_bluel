@@ -1,4 +1,5 @@
 
+
 let works = [];
 // Récupération des travaux depuis l'API
 async function fetchWorks() {
@@ -7,7 +8,10 @@ async function fetchWorks() {
     genererWorks(works);
 }
 
+
+
 fetchWorks();
+
 
 function genererWorks(works) {
     for (let i = 0; i < works.length; i++) {
