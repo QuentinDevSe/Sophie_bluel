@@ -209,8 +209,36 @@ a:hover {
     height: auto;
     cursor: pointer;
 }
+/*style pour le formulaire d'ajout des travaux*/
+.add-work-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
 
+.add-work-form-wrapper form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px; /* Ajustez la largeur maximale selon vos besoins */
+}
 
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+}
+
+#imagePreview {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+/*style pour les boutons de filtres*/
 .filtres {
 	display: flex;
 	flex-direction: row;
