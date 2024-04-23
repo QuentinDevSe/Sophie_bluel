@@ -1,3 +1,5 @@
+let authToken;
+
 async function login() {
     
 
@@ -33,9 +35,11 @@ async function login() {
             })
 
             .then(data => {
+
+                authToken = data.token;
                 sessionStorage.setItem("user",identifiants.email);
                 sessionStorage.setItem("isUser", "true");
-                sessionStorage.setItem("token",data.token);
+                sessionStorage.setItem("token",data.token); //variable pour stocker le token 
                 window.location.href = "index.html";
             })
         
@@ -46,7 +50,7 @@ async function login() {
                 alert('Une erreur s\'est produite lors de la connexion');
             }
         }
-        
+
     // Ajout du gestionnaire d'événements à la soumission du formulaire
     const form = document.querySelector('form');
     form.addEventListener('submit', FormSubmit);

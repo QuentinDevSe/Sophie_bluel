@@ -95,13 +95,24 @@ const updateModalContent = function () {
 // Fonction pour supprimer un travail de l'API
 const deleteWork = async function(workId) {
     try {
+        // Récupération du token d'authentification depuis la variable authToken
+        const authToken = sessionStorage.getItem("token");
+
+        // Préparation des en-têtes de la requête avec le token d'authentification
+        const headers = {
+            'Authorization': `Bearer ${authToken}`, // Utilisation du token d'authentification
+            'Content-Type': 'application/json'
+        };
+
         const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: headers // Inclusion des en-têtes dans la requête
         });
+        
         if (!response.ok) {
             throw new Error('Erreur lors de la suppression du travail');
         }
-        return response; // Retournez la réponse pour vérification dans la fonction appelante
+        return response;
     } catch (error) {
         console.error(error);
     }

@@ -1,5 +1,4 @@
 
-
 let works = [];
 // Récupération des travaux depuis l'API
 async function fetchWorks() {
