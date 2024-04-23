@@ -16,6 +16,14 @@ const openModal = function (event) {
 
     // Mettez à jour le contenu du modal-wrapper avec les images de la galerie
     updateModalContent();
+
+     // Ajoutez l'écouteur d'événement pour afficher le formulaire d'ajout de travail
+     const addWorkButton = modal.querySelector('.add-work-button');
+     addWorkButton.addEventListener('click', function () {
+         // Afficher le formulaire pour ajouter un travail
+         displayAddFormWork();
+
+});
 };
 
 
@@ -83,11 +91,6 @@ const updateModalContent = function () {
     const addWorkButton = document.createElement('button');
     addWorkButton.textContent = 'Ajouter un travail';
     addWorkButton.classList.add('add-work-button');
-    addWorkButton.addEventListener('click', function () {
-            // Afficher le formulaire pour ajouter un travail
-        displayAddWorkForm();
-    
-    });
 
     modalContent.appendChild(addWorkButton);
 };
@@ -106,7 +109,7 @@ const deleteWork = async function(workId) {
 
         const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
             method: 'DELETE',
-            headers: headers // Inclusion des en-têtes dans la requête
+            headers: headers 
         });
         
         if (!response.ok) {
@@ -126,22 +129,170 @@ const deleteWorkAndUpdateDOM = async function(workId, imageContainer) {
     imageContainer.remove();
 };
 
-const displayAddWorkForm = function () {
+const displayAddFormWork = function () {
     const modalContent = modal.querySelector('.modal-wrapper');
     modalContent.innerHTML = ''; 
 
     const addWorkForm = document.createElement('form');
     addWorkForm.classList.add('add-work-form');
-    // Ajoutez les champs nécessaires pour ajouter un travail (par exemple, titre, image, catégorie, etc.)
-    // Ajoutez des éléments au formulaire
+    // Ajoutez un gestionnaire d'événements pour l'événement "submit" du formulaire
+    addWorkForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+    
+        const formData = new FormData(); // Créez un objet FormData vide
+    
+        
+        // Vérifiez d'abord si l'utilisateur a sélectionné une image
+        if (imageInput.files.length > 0) {
+            // Ajoutez l'image au FormData avec le nom "image"
+            formData.append('image', imageInput.files[0]);
+        }
+    
+        // Ajoutez le titre au FormData avec le nom "title"
+        formData.append('title', titleInput.value);
+        
+        // Ajoutez la catégorie au FormData avec le nom "category"
+        formData.append('category', categorySelect.value);
+        
+        const authToken = sessionStorage.getItem("token");
 
-    // Ajout d'un bouton "Ajouter" pour soumettre le formulaire
+        const headers = {
+            'Authorization': `Bearer ${authToken}`, // Utilisation du token d'authentification
+            'Content-Type': 'application/json'
+        };
+    
+        try {
+            const response = await fetch('http://localhost:5678/api/works', {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: headers
+            });
+    
+            if (!response.ok) {
+                throw new Error('Erreur lors de l\'ajout du travail');
+            }
+    
+            // Mettez à jour le contenu de la modale pour afficher le travail nouvellement ajouté
+            updateModalContent();
+        } catch (error) {
+            console.error(error);
+        }
+    });
+    // Ajouter un travail
+    // Image (glisser-déposer)
+    const imageLabel = document.createElement('label');
+    imageLabel.textContent = 'jpg, png (4 Mo max) :';
+    const imageInput = document.createElement('input');
+    imageInput.type = 'file';
+    imageInput.id = 'imageInput';
+    imageInput.accept = 'image/jpeg, image/png';
+    imageInput.style.display = 'none';
+    imageLabel.appendChild(imageInput);
+    addWorkForm.appendChild(imageLabel);
+
+    const dropZone = document.createElement('div');
+    dropZone.id = 'dropZone';
+    dropZone.textContent = '+ Ajouter une photo';
+    addWorkForm.appendChild(dropZone);
+
+    const imagePreview = document.createElement('img');
+    imagePreview.id = 'imagePreview';
+    imagePreview.alt = 'Aperçu de l\'image';
+    addWorkForm.appendChild(imagePreview);
+    
+    // Titre
+    const titleLabel = document.createElement('label');
+    titleLabel.textContent = 'Titre';
+    const titleInput = document.createElement('input');
+    titleInput.type = 'text';
+    titleInput.name = 'title';
+    titleLabel.appendChild(titleInput);
+    addWorkForm.appendChild(titleLabel);
+
+    // Catégorie
+    const categoryLabel = document.createElement('label');
+    categoryLabel.textContent = 'Catégorie';
+    const categorySelect = document.createElement('select');
+    categorySelect.name = 'category';
+    const categories = ['Objets', 'Appartements', 'Hôtels & Restaurants'];
+    categories.forEach((category, index) => {
+        const option = document.createElement('option');
+        option.value = index + 1;
+        option.textContent = category;
+        categorySelect.appendChild(option);
+    });
+    categoryLabel.appendChild(categorySelect);
+    addWorkForm.appendChild(categoryLabel);
+
+    
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Ajouter';
     submitButton.type = 'submit';
     addWorkForm.appendChild(submitButton);
 
     modalContent.appendChild(addWorkForm);
+
+    // Gestion du glisser-déposer d'images
+    const handleDrop = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const file = event.dataTransfer.files[0];
+
+        if (validateFile(file)) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const validateFile = function (file) {
+        const allowedTypes = ['image/jpeg', 'image/png'];
+        const maxSize = 4 * 1024 * 1024; // 4 Mo en octets
+
+        if (!allowedTypes.includes(file.type)) {
+            alert('Veuillez sélectionner une image au format JPG ou PNG.');
+            return false;
+        }
+
+        if (file.size > maxSize) {
+            alert('La taille de l\'image ne doit pas dépasser 4 Mo.');
+            return false;
+        }
+
+        return true;
+    };
+
+    dropZone.addEventListener('dragover', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    });
+
+    dropZone.addEventListener('drop', handleDrop);
+
+    const fileInput = document.getElementById('imageInput');
+    fileInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const maxSize = 4 * 1024 * 1024; // 4 Mo en octets
+
+        if (file.size > maxSize) {
+            alert('La taille de l\'image ne doit pas dépasser 4 Mo.');
+            this.value = ''; // Réinitialisez l'élément input pour effacer le fichier sélectionné
+            return;
+        }
+
+        if (validateFile(file)) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 };
 
 // Sélection des éléments avec la classe 'js-modal' et ajout d'un écouteur d'événements à chacun
