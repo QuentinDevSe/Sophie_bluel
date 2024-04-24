@@ -171,17 +171,26 @@ a:hover {
 }
 
 .modal-wrapper {
+	position: relative;
     overflow: auto;
-    width: 800px;
-    max-width: calc(100vw - 30px);
-    height: 900px;
-    padding: 20px;
+    width: 50%;
+    max-width: calc(100vw - 30vw);
+    height: 80%;
+    padding: 70px 70px 20px 70px;
     border-radius: 10px;
     background-color: #FFFEF8;
 }
 
+.modal-wrapper h2 {
+	color: black;
+
+}
+
 .js-modal-close-button {
-    display: flex;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	display: flex;
     justify-content: flex-end;
 }
 
@@ -197,10 +206,11 @@ a:hover {
     color: darkgray; 
 }
 
+
 /* Style pour les miniatures d'images */
 .min-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Utilisez auto-fill pour remplir la ligne */
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     grid-gap: 15px;
 }
 
@@ -209,9 +219,60 @@ a:hover {
     height: auto;
     cursor: pointer;
 }
+
+.modal-image-container {
+	position: relative;
+	margin-bottom: 30px;
+}
+
+.delete-button {
+	position: absolute;
+	top:0;
+	right: 0;
+	color: white;
+	background-color: black;
+	border-radius: 5px;
+	margin-top: 5px;
+	margin-right: 5px;
+	cursor: pointer;
+	
+}
+
+.delete-button:hover {
+	background-color: white;
+	color: black;
+}
+
+.div-add-work-button {
+	margin: 50px 0;
+	padding: 50px 0;
+	border-top: 2px solid gainsboro;
+	display: flex;
+	justify-content: center;
+}
+
+.add-work-button {
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	text-align: center;
+	border: 1px solid #1D6154;
+	border-radius: 60px;
+	height: 50px;
+	margin: 0 1em;
+	min-width: 100px;
+	width: 300px;
+}
+
+.add-work-button:hover {
+	color: #1D6154;
+	background-color: white;
+}
 /*style pour le formulaire d'ajout des travaux*/
 .add-work-form {
     display: flex;
+	flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
@@ -224,6 +285,13 @@ a:hover {
     max-width: 400px; /* Ajustez la largeur maximale selon vos besoins */
 }
 
+#dropZone {
+	background-color: aqua;
+    max-width: 100%;
+    height: 150px;
+    margin-top: 10px;
+}
+
 .form-group {
     margin-bottom: 20px;
 }
@@ -234,7 +302,7 @@ a:hover {
 
 #imagePreview {
     max-width: 100%;
-    height: auto;
+    height: 200px;
     margin-top: 10px;
 }
 

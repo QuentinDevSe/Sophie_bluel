@@ -73,7 +73,9 @@ const updateModalContent = function () {
 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-button');
-        deleteButton.textContent = 'Supprimer';
+        const deleteIcon = document.createElement('i');
+        deleteIcon.classList.add('fa-solid', 'fa-trash-can'); // Ajoutez les classes pour l'icône
+        deleteButton.appendChild(deleteIcon); // Ajoutez l'icône au bouton
          // Ajoutez l'ID du travail comme un attribut data-id
          deleteButton.dataset.id = image.parentElement.dataset.id;
         
@@ -81,18 +83,20 @@ const updateModalContent = function () {
              const workId = deleteButton.dataset.id; // Récupérez l'ID du travail depuis l'attribut data-id
              await deleteWorkAndUpdateDOM(workId, modalImageContainer);
          });
-
+        
         modalImageContainer.appendChild(deleteButton);
         modalImageContainer.appendChild(modalImage);
         minGrid.appendChild(modalImageContainer);
     });
-
+    const divAddWorkButton = document.createElement('div');
+    divAddWorkButton.classList.add('div-add-work-button');
 
     const addWorkButton = document.createElement('button');
-    addWorkButton.textContent = 'Ajouter un travail';
+    addWorkButton.textContent = 'Ajouter une photo';
     addWorkButton.classList.add('add-work-button');
 
-    modalContent.appendChild(addWorkButton);
+    modalContent.appendChild(divAddWorkButton);
+    divAddWorkButton.appendChild(addWorkButton);
 };
 
 // Fonction pour supprimer un travail de l'API
@@ -147,7 +151,7 @@ const submitWork = async (formData) => {
             throw new Error('Erreur lors de l\'ajout du travail');
         }
 
-        // Mettez à jour le contenu de la modale pour afficher le travail nouvellement ajouté
+        // Mettre à jour le contenu de la modale pour afficher le travail nouvellement ajouté
         updateModalContent();
     } catch (error) {
         console.error(error);
