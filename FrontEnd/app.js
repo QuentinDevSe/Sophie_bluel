@@ -14,10 +14,10 @@ const openModal = function (event) {
     modal.querySelector('.js-modal-close').addEventListener('click', closeModal);
     modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
 
-    // Mettez à jour le contenu du modal-wrapper avec les images de la galerie
+    // Mettre à jour le contenu du modal-wrapper avec les images de la galerie
     updateModalContent();
 
-     // Ajoutez l'écouteur d'événement pour afficher le formulaire d'ajout de travail
+     // Ajouter l'écouteur d'événement pour afficher le formulaire d'ajout de travail
      const addWorkButton = modal.querySelector('.add-work-button');
      addWorkButton.addEventListener('click', function () {
          // Afficher le formulaire pour ajouter un travail
@@ -58,10 +58,9 @@ const updateModalContent = function () {
     const modalContent = modal.querySelector('.modal-wrapper');
     const minGrid = modalContent.querySelector('.min-grid');
 
-    // Supprimez le contenu actuel du modalContent
     minGrid.innerHTML = "";
 
-    // Parcourez toutes les images de la galerie et créez des miniatures d'images correspondantes dans le modalContent
+    // Parcourir toutes les images de la galerie et créez des miniatures d'images correspondantes dans le modalContent
     galleryImages.forEach(image => {
         const modalImageContainer = document.createElement('div');
         modalImageContainer.classList.add('modal-image-container');
@@ -74,13 +73,13 @@ const updateModalContent = function () {
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-button');
         const deleteIcon = document.createElement('i');
-        deleteIcon.classList.add('fa-solid', 'fa-trash-can'); // Ajoutez les classes pour l'icône
-        deleteButton.appendChild(deleteIcon); // Ajoutez l'icône au bouton
-         // Ajoutez l'ID du travail comme un attribut data-id
+        deleteIcon.classList.add('fa-solid', 'fa-trash-can');
+        deleteButton.appendChild(deleteIcon);
+         // Ajouter l'ID du travail comme un attribut data-id
          deleteButton.dataset.id = image.parentElement.dataset.id;
         
          deleteButton.addEventListener('click', async function () {
-             const workId = deleteButton.dataset.id; // Récupérez l'ID du travail depuis l'attribut data-id
+             const workId = deleteButton.dataset.id; // Récupérer l'ID du travail depuis l'attribut data-id
              await deleteWorkAndUpdateDOM(workId, modalImageContainer);
          });
         
@@ -107,7 +106,7 @@ const deleteWork = async function(workId) {
 
         // Préparation des en-têtes de la requête avec le token d'authentification
         const headers = {
-            'Authorization': `Bearer ${authToken}`, // Utilisation du token d'authentification
+            'Authorization': `Bearer ${authToken}`,
             'Content-Type': 'application/json'
         };
 
@@ -126,10 +125,10 @@ const deleteWork = async function(workId) {
 };
 
 const deleteWorkAndUpdateDOM = async function(workId, imageContainer) {
-    await deleteWork(workId); // Supprimez le travail de l'API
-    // Supprimez l'image de la galerie principale
+    await deleteWork(workId); // Supprimer le travail de l'API
+    // Supprimer l'image de la galerie principale
     imageContainer.parentElement.remove();
-    // Supprimez l'image de la modale
+    // Supprimer l'image de la modale
     imageContainer.remove();
 };
 
@@ -165,23 +164,20 @@ const displayAddFormWork = function () {
 
     const addWorkForm = document.createElement('form');
     addWorkForm.classList.add('add-work-form');
-    // Ajoutez un gestionnaire d'événements pour l'événement "submit" du formulaire
+    // Ajout d'un gestionnaire d'événements pour l'événement "submit" du formulaire
     addWorkForm.addEventListener('submit', async function (event) {
         event.preventDefault();
     
-        const formData = new FormData(); // Créez un objet FormData vide
+        const formData = new FormData(); // Création d'un objet FormData vide
     
-        
-        // Vérifiez d'abord si l'utilisateur a sélectionné une image
+        // Vérifier d'abord si l'utilisateur a sélectionné une image
         if (imageInput.files.length > 0) {
-            // Ajoutez l'image au FormData avec le nom "image"
+            // Ajouter l'image au FormData avec le nom "imageUrl"
             formData.append('imageUrl', imageInput.files[0]);
         }
-    
-        // Ajoutez le titre au FormData avec le nom "title"
+
+
         formData.append('title', titleInput.value);
-        
-        // Ajoutez la catégorie au FormData avec le nom "category"
         formData.append('category', categorySelect.value);
 
         try {
@@ -236,7 +232,7 @@ const displayAddFormWork = function () {
     categoryLabel.appendChild(categorySelect);
     addWorkForm.appendChild(categoryLabel);
 
-    
+    // Bouton Ajouter
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Ajouter';
     submitButton.type = 'submit';
@@ -292,15 +288,15 @@ const displayAddFormWork = function () {
 
         if (file.size > maxSize) {
             alert('La taille de l\'image ne doit pas dépasser 4 Mo.');
-            this.value = ''; // Réinitialisez l'élément input pour effacer le fichier sélectionné
+            this.value = ''; // Réinitialiser l'élément input pour effacer le fichier sélectionné
             return;
         }
 
         if (validateFile(file)) {
             const reader = new FileReader();
-            reader.onload = function (e) {
+            reader.onload = function (event) {
                 const imagePreview = document.getElementById('imagePreview');
-                imagePreview.src = e.target.result;
+                imagePreview.src = event.target.result;
             };
             reader.readAsDataURL(file);
         }
