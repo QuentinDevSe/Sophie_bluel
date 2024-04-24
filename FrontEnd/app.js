@@ -129,6 +129,32 @@ const deleteWorkAndUpdateDOM = async function(workId, imageContainer) {
     imageContainer.remove();
 };
 
+const submitWork = async (formData) => {
+    const authToken = sessionStorage.getItem("token");
+    const headers = {
+        'Authorization': `Bearer ${authToken}`,
+        'Content-Type': 'application/json'
+    };
+
+    try {
+        const response = await fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            body: formData,
+            headers: headers
+        });
+
+        if (!response.ok) {
+            throw new Error('Erreur lors de l\'ajout du travail');
+        }
+
+        // Mettez à jour le contenu de la modale pour afficher le travail nouvellement ajouté
+        updateModalContent();
+    } catch (error) {
+        console.error(error);
+        alert('Une erreur s\'est produite lors de l\'ajout du travail');
+    }
+};
+
 const displayAddFormWork = function () {
     const modalContent = modal.querySelector('.modal-wrapper');
     modalContent.innerHTML = ''; 
@@ -145,7 +171,7 @@ const displayAddFormWork = function () {
         // Vérifiez d'abord si l'utilisateur a sélectionné une image
         if (imageInput.files.length > 0) {
             // Ajoutez l'image au FormData avec le nom "image"
-            formData.append('image', imageInput.files[0]);
+            formData.append('imageUrl', imageInput.files[0]);
         }
     
         // Ajoutez le titre au FormData avec le nom "title"
@@ -153,27 +179,9 @@ const displayAddFormWork = function () {
         
         // Ajoutez la catégorie au FormData avec le nom "category"
         formData.append('category', categorySelect.value);
-        
-        const authToken = sessionStorage.getItem("token");
 
-        const headers = {
-            'Authorization': `Bearer ${authToken}`, // Utilisation du token d'authentification
-            'Content-Type': 'application/json'
-        };
-    
         try {
-            const response = await fetch('http://localhost:5678/api/works', {
-                method: 'POST',
-                body: JSON.stringify(formData),
-                headers: headers
-            });
-    
-            if (!response.ok) {
-                throw new Error('Erreur lors de l\'ajout du travail');
-            }
-    
-            // Mettez à jour le contenu de la modale pour afficher le travail nouvellement ajouté
-            updateModalContent();
+            await submitWork(formData);
         } catch (error) {
             console.error(error);
         }
