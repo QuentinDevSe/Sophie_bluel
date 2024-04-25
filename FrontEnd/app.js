@@ -1,3 +1,4 @@
+import { genererWorks } from './works.js';
 
 let modal = null;
 const focusableSelector = "button, a, input, textarea";
@@ -87,6 +88,7 @@ const updateModalContent = function () {
         modalImageContainer.appendChild(modalImage);
         minGrid.appendChild(modalImageContainer);
     });
+
     const divAddWorkButton = document.createElement('div');
     divAddWorkButton.classList.add('div-add-work-button');
 
@@ -136,7 +138,6 @@ const submitWork = async (formData) => {
     const authToken = sessionStorage.getItem("token");
     const headers = {
         'Authorization': `Bearer ${authToken}`,
-        'Content-Type': 'application/json'
     };
 
     try {
@@ -151,7 +152,7 @@ const submitWork = async (formData) => {
         }
 
         // Mettre à jour le contenu de la modale pour afficher le travail nouvellement ajouté
-        updateModalContent();
+        genererWorks();
     } catch (error) {
         console.error(error);
         alert('Une erreur s\'est produite lors de l\'ajout du travail');
@@ -172,11 +173,11 @@ const displayAddFormWork = function () {
     
         // Vérifier d'abord si l'utilisateur a sélectionné une image
         if (imageInput.files.length > 0) {
-            // Ajouter l'image au FormData avec le nom "imageUrl"
-            formData.append('imageUrl', imageInput.files[0]);
+            // Ajouter l'image au FormData avec le nom "image"
+            formData.append('image', imageInput.files[0]);
         }
 
-
+        // Modifier les noms des champs pour correspondre aux attentes du serveur
         formData.append('title', titleInput.value);
         formData.append('category', categorySelect.value);
 
@@ -213,7 +214,7 @@ const displayAddFormWork = function () {
     titleLabel.textContent = 'Titre';
     const titleInput = document.createElement('input');
     titleInput.type = 'text';
-    titleInput.name = 'title';
+    titleInput.name = 'title'; // Modifier le nom du champ
     titleLabel.appendChild(titleInput);
     addWorkForm.appendChild(titleLabel);
 
@@ -221,7 +222,7 @@ const displayAddFormWork = function () {
     const categoryLabel = document.createElement('label');
     categoryLabel.textContent = 'Catégorie';
     const categorySelect = document.createElement('select');
-    categorySelect.name = 'category';
+    categorySelect.name = 'category'; // Modifier le nom du champ
     const categories = ['Objets', 'Appartements', 'Hôtels & Restaurants'];
     categories.forEach((category, index) => {
         const option = document.createElement('option');
@@ -233,11 +234,13 @@ const displayAddFormWork = function () {
     addWorkForm.appendChild(categoryLabel);
 
     // Bouton Ajouter
+    const divSubmitButton = document.createElement("div");
+    divSubmitButton.classList.add("divSubmitButton");
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Ajouter';
     submitButton.type = 'submit';
-    addWorkForm.appendChild(submitButton);
-
+    divSubmitButton.appendChild(submitButton);
+    addWorkForm.appendChild(divSubmitButton);
     modalContent.appendChild(addWorkForm);
 
     // Gestion du glisser-déposer d'images
