@@ -135,30 +135,37 @@ const deleteWorkAndUpdateDOM = async function(workId, imageContainer) {
     
 };
 
-const submitWork = async (formData) => {
-    const authToken = sessionStorage.getItem("token");
-    const headers = {
-        'Authorization': `Bearer ${authToken}`,
-    };
+const submitWork = function(formData) {
+    return new Promise((resolve, reject) => {
+        const authToken = sessionStorage.getItem("token");
+        const headers = {
+            'Authorization': `Bearer ${authToken}`,
+        };
 
-    try {
-        const response = await fetch('http://localhost:5678/api/works', {
+        fetch('http://localhost:5678/api/works', {
             method: 'POST',
             body: formData,
             headers: headers
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur lors de l\'ajout du travail');
+            }
+            return response.json();
+        })
+        .then(newWork => {
+            updateModalContent();
+            const modalImageContainer = document.querySelector('.modal-image-container');
+            modalImageContainer.dataset.id = newWork.id;
+            location.reload();
+            resolve();
+        })
+        .catch(error => {
+            console.error(error);
+            alert('Une erreur s\'est produite lors de l\'ajout du travail');
+            reject(error);
         });
-
-        if (!response.ok) {
-            throw new Error('Erreur lors de l\'ajout du travail');
-        }
-
-        // Mettre à jour le contenu de la modale pour afficher le travail nouvellement ajouté
-        updateModalContent();
-        location.reload();
-    } catch (error) {
-        console.error(error);
-        alert('Une erreur s\'est produite lors de l\'ajout du travail');
-    }
+    });
 };
 
 const displayAddFormWork = function () {
@@ -216,7 +223,7 @@ const displayAddFormWork = function () {
     titleLabel.textContent = 'Titre';
     const titleInput = document.createElement('input');
     titleInput.type = 'text';
-    titleInput.name = 'title'; // Modifier le nom du champ
+    titleInput.name = 'title';
     titleLabel.appendChild(titleInput);
     addWorkForm.appendChild(titleLabel);
 
@@ -224,7 +231,7 @@ const displayAddFormWork = function () {
     const categoryLabel = document.createElement('label');
     categoryLabel.textContent = 'Catégorie';
     const categorySelect = document.createElement('select');
-    categorySelect.name = 'category'; // Modifier le nom du champ
+    categorySelect.name = 'category';
     const categories = ['Objets', 'Appartements', 'Hôtels & Restaurants'];
     categories.forEach((category, index) => {
         const option = document.createElement('option');
