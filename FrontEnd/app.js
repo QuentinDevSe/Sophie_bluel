@@ -1,4 +1,3 @@
-import { genererWorks } from './works.js';
 
 let modal = null;
 const focusableSelector = "button, a, input, textarea";
@@ -132,6 +131,8 @@ const deleteWorkAndUpdateDOM = async function(workId, imageContainer) {
     imageContainer.parentElement.remove();
     // Supprimer l'image de la modale
     imageContainer.remove();
+    location.reload();
+    
 };
 
 const submitWork = async (formData) => {
@@ -152,7 +153,8 @@ const submitWork = async (formData) => {
         }
 
         // Mettre à jour le contenu de la modale pour afficher le travail nouvellement ajouté
-        genererWorks();
+        updateModalContent();
+        location.reload();
     } catch (error) {
         console.error(error);
         alert('Une erreur s\'est produite lors de l\'ajout du travail');

@@ -12,7 +12,7 @@ async function fetchWorks() {
 fetchWorks();
 
 
-export function genererWorks(works) {
+function genererWorks(works) {
     for (let i = 0; i < works.length; i++) {
 
         const article = works[i];
